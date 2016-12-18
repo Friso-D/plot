@@ -370,6 +370,20 @@ func Crop(c Canvas, left, right, bottom, top vg.Length) Canvas {
 	}
 }
 
+// SplitVertical returns the lower and upper portions of c after
+// splitting it along a horizontal line distance y from the
+// bottom of c.
+func SplitVertical(c Canvas, y vg.Length) (lower, upper Canvas) {
+	return Crop(c, 0, 0, 0, c.Min.Y-c.Max.Y+y), Crop(c, 0, 0, y, 0)
+}
+
+// SplitHorizontal returns the left and right portions of c after
+// splitting it along a vertical line distance x from the
+// left of c.
+func SplitHorizontal(c Canvas, x vg.Length) (left, right Canvas) {
+	return Crop(c, 0, c.Min.X-c.Max.X+x, 0, 0), Crop(c, x, 0, 0, 0)
+}
+
 // Tiles creates regular subcanvases from a Canvas.
 type Tiles struct {
 	// Cols and Rows specify the number of rows and columns of tiles.
@@ -440,7 +454,7 @@ func (c *Canvas) StrokeLines(sty LineStyle, lines ...[]vg.Point) {
 // StrokeLine2 draws a line between two points in the given
 // Canvas.
 func (c *Canvas) StrokeLine2(sty LineStyle, x0, y0, x1, y1 vg.Length) {
-	c.StrokeLines(sty, []vg.Point{{x0, y0}, {x1, y1}})
+	c.StrokeLines(sty, []vg.Point{{X: x0, Y: y0}, {X: x1, Y: y1}})
 }
 
 // ClipLinesXY returns a slice of lines that

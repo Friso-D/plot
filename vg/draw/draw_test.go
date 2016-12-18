@@ -57,6 +57,34 @@ func TestCrop(t *testing.T) {
 	}
 }
 
+func TestSplitVertical(t *testing.T) {
+	var r recorder.Canvas
+	c := NewCanvas(&r, 6, 3)
+	lower, upper := SplitVertical(c, 1)
+	lowerRect := vg.Rectangle{Min: vg.Point{X: 0, Y: 0}, Max: vg.Point{X: 6, Y: 1}}
+	upperRect := vg.Rectangle{Min: vg.Point{X: 0, Y: 1}, Max: vg.Point{X: 6, Y: 3}}
+	if lowerRect != lower.Rectangle {
+		t.Errorf("lower: have %+v, want %+v", lower.Rectangle, lowerRect)
+	}
+	if upperRect != upper.Rectangle {
+		t.Errorf("upper: have %+v, want %+v", upper.Rectangle, upperRect)
+	}
+}
+
+func TestSplitHorizontal(t *testing.T) {
+	var r recorder.Canvas
+	c := NewCanvas(&r, 6, 3)
+	left, right := SplitHorizontal(c, 1)
+	leftRect := vg.Rectangle{Min: vg.Point{X: 0, Y: 0}, Max: vg.Point{X: 1, Y: 3}}
+	rightRect := vg.Rectangle{Min: vg.Point{X: 1, Y: 0}, Max: vg.Point{X: 6, Y: 3}}
+	if leftRect != left.Rectangle {
+		t.Errorf("left: have %+v, want %+v", left.Rectangle, leftRect)
+	}
+	if rightRect != right.Rectangle {
+		t.Errorf("right: have %+v, want %+v", right.Rectangle, rightRect)
+	}
+}
+
 func TestTile(t *testing.T) {
 	var r recorder.Canvas
 	c := NewCanvas(&r, 13, 7)
